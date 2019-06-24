@@ -20,7 +20,7 @@ public class Application {
 
     @PostConstruct
     public void init() {
-        customerDao.save(new Customer("Doe", "Jhon"));
+        customerDao.save(new Customer("Doe", "John"));
         customerDao.save(new Customer("Messi","Lionel"));
         customerDao.save(new Customer("James","Hetfield"));
 
