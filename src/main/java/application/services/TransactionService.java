@@ -1,4 +1,9 @@
 package application.services;
 
-public class TransactionService {
+import application.pojo.Transaction;
+
+public interface TransactionService {
+
+    Transaction createTransaction(int credit);
+
 }

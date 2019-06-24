@@ -1,4 +1,8 @@
 package application.services;
 
-public class AccountService {
+import application.dao.CustomerDaoException;
+
+public interface AccountService {
+
+    public void openAccount(int customerId, int initialValue) throws CustomerDaoException;
 }

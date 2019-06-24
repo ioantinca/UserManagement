@@ -1,28 +1,34 @@
-package resources;
+package application.resources;
 
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import pojo.Greeting;
-import pojo.Transaction;
+import application.dao.CustomerDaoException;
+import application.services.AccountService;
+import application.services.CustomerResponse;
+import application.services.CustomerService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.concurrent.atomic.AtomicLong;
 
 @RestController
 public class CustomerResource {
 
+    @Autowired
+    AccountService accountService;
+
+    @Autowired
+    CustomerService customerService;
+
     private static final String template = "Hello, %s!";
     private final AtomicLong counter = new AtomicLong();
 
-//    @RequestMapping("/transaction")
-//    public Transaction getTransaction(@RequestParam(value="credit", defaultValue="12") Integer credit) {
-//        return new Transaction(counter.incrementAndGet(), credit);
-//    }
+    @RequestMapping(method = RequestMethod.POST, value = "/openAccount/{customerId}")
+    public void openAccount(@PathVariable("customerId") int customerId, @RequestParam(value="initialValue", defaultValue = "0") int initialValue) throws CustomerDaoException {
+        accountService.openAccount(customerId, initialValue);
+    }
 
-    @RequestMapping("/greeting")
-    public Greeting greeting(@RequestParam(value="name", defaultValue="World") String name) {
-        return new Greeting(counter.incrementAndGet(),
-                String.format(template, name));
+    @RequestMapping(method = RequestMethod.GET, value = "/getCustomerDetails")
+    public CustomerResponse getCustomerDetails(@RequestParam("customerId") int customerId) throws CustomerDaoException {
+        return customerService.getCustomerDetails(customerId);
     }
 }
